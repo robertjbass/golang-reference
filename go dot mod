@@ -1,5 +1,0 @@
-// The go.mod is in ./firstapp/greeting
-// Upon completion, I may refactor to use the root as the base folder
-// module github.com/716green/golang-reference
-
-// go 1.16

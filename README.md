@@ -2,19 +2,27 @@
 
 ## Syntax, Formats, Conventions, Standards, and Examples
 
+### Each subfolder contains its own go.mod file and are treated as separate projects
+
 > This repo is to document, explain, and reference the features of the Go programming language
 
-> The purpose of this repo is to create a series of references that I can use in the future when working with the Go programming language. As a JavaScript developer, these references are important to compare and contrast language features and syntax
+  > The purpose of this repo is to create a series of references that I can use in the future when working with the Go programming language. As a (mostly) JavaScript developer, these references are important to compare and contrast language features and syntax
 
-> There is a `.go` file in `./notes/syntax.go` that contains all of the examples from this `README.md` file.
-
-> Special thanks to Maximillian Schwartzmüller of Academind for creating an excellent course on Golang 👏
+* There is a `.go` file in `./notes/syntax.go` that contains all of the examples from this `README.md` file.
+* Special thanks to Maximillian Schwartzmüller of Academind for creating an excellent course on Golang 👏
 
 📁 `firstapp` is a self-contained module within this repo. It is used to demonstrate go.mod and package structures
 
 📁 `notes` contains code snippets contained in this `README.md` file that can be run with the Go compiler
 
 📁 `assignments` contains exercises that I'm using to test how well I'm retaining the concepts without referencing the notes
+
+## General Go Notes
+* Go uses semicolons, they are omitted in development and created behind the scenes
+* The modules should match the host URL, for example
+  * File Structure: 📁 github.com/716green/myGoApp
+  * Repo: https://github.com/716green/myGoApp
+* Go looks for a `main` package and `main` func when using `go run .`
 
 
 ## Go File Structure
