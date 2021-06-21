@@ -19,6 +19,9 @@ func main() {
 	//? var varName varType - must include type without a direct value
 	//? var varName = value - will infer type
 
+	//? constants - const instead of var - immutable, must be known when defined
+	const pi float32 = 3.14159265358979
+
 	//* Naming Variables for Imports
 	//? This variable can not be imported:
 	var myLocalVar string = "Because it's lowercase"
