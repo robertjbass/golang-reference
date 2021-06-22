@@ -1,3 +1,3 @@
-module github.com/716green/golang-reference/bmi-app
+module github.com/716green/academind/bmi-app
 
 go 1.16

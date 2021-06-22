@@ -182,6 +182,11 @@ fmt.Println(arr, "\n", odd, "\n", twoOfFive, "\n", emptyString, "\n", notDefined
 ```
 
 ## Functions
+**A function is 'Code on Demand '**
+* You define a function and it's code ahead of time
+  * Only once a function is 'called', the code inside of it executes
+* Functions can (but don't have to) take input (parameters) and produce output (return values)
+* In Go, functions can return multiple values
 
 ### Function structure
 
@@ -209,6 +214,50 @@ fmt.Println("sum of 4 and 5", addResponse)
 returnArray := multiple_returns()
 fmt.Println("[2]string{\"Hello\", \"Array\"}")
 fmt.Println(returnArray)
+```
+
+### Functions - Multiple Returns
+
+```go
+// func funcName(params) (returnType1, returnType2, ...) {
+//  return num1, num2
+// }
+// newVar1, newVar2 := funcName
+
+func generateRandomNumbers() (int, int) {
+	randomNumber1 := rand.Intn(10)
+	randomNumber2 := rand.Intn(10)
+	return randomNumber1, randomNumber2
+}
+
+num1, num2 := generateRandomNumbers()
+fmt.Println(num1, num2)
+```
+
+### Functions - Named Return(s)
+
+```go
+
+func generateRandomNumbers(firstNumMax int, secondNumMax int) (first int, second int) {
+	randomNumber1 := rand.Intn(firstNumMax)
+	randomNumber2 := rand.Intn(secondNumMax)
+	return randomNumber1, randomNumber2
+}
+
+
+```
+
+```go
+func randomNumberSum(firstNumMax int, secondNumMax int) (sum int) {
+	fmt.Println("return named value")
+	randomNumber1 := rand.Intn(firstNumMax)
+	randomNumber2 := rand.Intn(secondNumMax)
+  // sum is already defined so = is used, not :=
+	sum = randomNumber1 + randomNumber2
+	// return sum is implied
+	return
+}
+
 ```
 
 ## Printing
@@ -375,4 +424,151 @@ import "fmt"
 import "github.com/716green/academind/firstapp/greeting"
 
 // Auto-format will change the second version to the first one
+```
+
+---
+# Pointers
+### What are pointers?
+
+
+```go
+
+myName := "Bob"     // Bob
+myAge := 30         // 30
+userAge := &age     // 0xc0110020011
+userName := &myName // 0xc0000018050
+
+```
+**Values are stored in memory**
+> Values in Variables
+`myName := "Bob"`
+
+---
+**Just-in-Time Values**
+> fmt.Println("Hi!")
+> Only used once,=, not stored after
+### Why do we need pointers?
+
+**They allow us to: **
+* save the original value
+* write more efficient functions
+
+```go
+
+	thisName := "Bob"     // computer memory: 0xc0000018050
+	thisAge := 30         // computer memory: 0xc0110020011
+	userAge := &age       // 0xc0110020011
+	userName := &thisName // 0xc0000018050
+	fmt.Println(thisName, thisAge, userAge, userName)
+
+	//* & tells go to get the memory address of age and store it in myAge
+	//? type: var myAge *int - asterisk indicates pointer
+	myAge := &age // 0x140000b2000
+
+	//? When fully written out
+	// var myAge2 *int
+	// myAge2 = &age // 0x140000b2000
+
+	fmt.Println("age memory address: ", myAge)        // 0x140000b2000
+	fmt.Println("age memory address value: ", *myAge) // 30 // this is called 'dereferencing'
+
+	//! myAge = 30 // this won't work, myAge has already been defined as a pointer
+
+	*myAge = 31
+
+	fmt.Println(*myAge) // 31
+
+	//* the original address is now modified
+	fmt.Println(age) // 31
+
+	// double() takes a reference as a value
+	doubledAge := double(&age)
+	fmt.Println("age", age)               // 31
+	fmt.Println("doubledAge", doubledAge) // 62
+```
+
+# Structs, Pointers, Methods
+
+## What and Why
+* Uses much less memory
+* References to memory addresses can still use dot notation to destructure
+
+## Structs in action
+* Methods can be added to structs by adding the params before the function name
+  * `func (user User) getUsername() {...}`
+* It's a good practice to use **Creation Functions**
+  * A `creation function` is a function that creates data based on a struct 
+
+```go
+var reader = bufio.NewReader(os.Stdin)
+
+//* Struct
+type User struct {
+	firstName   string
+	lastName    string
+	age         int
+	createdDate time.Time // Struct within a struct
+}
+
+//* Methods - methods are functions within the struct using "receiver arguments"
+//? Pointing to User struct
+//* Attaching to User struct
+// func outputUserDetails(user *User) { // old
+// func (Struct) funcName(){... // new
+func (user *User) outputUserDetails() {
+	//? When you reference dot notation, go assumes you're looking to dereference the fields
+	//? The proper notation would be (*user).firstName - (See name values vs age value)
+	fmt.Printf("My name is %v %v - age %v\n", user.firstName, user.lastName, (*user).age)
+}
+
+func main() {
+	//? Requesting pointer to memory address
+	var newUser *User
+
+	firstName := getUserData("Please enter your first name: ")
+	lastName := getUserData("Please enter your last name: ")
+	age := getUserInt("Please enter your age: ")
+
+	//* Created with helper function
+	//? Dereference the memory address and saving the value to newUser
+	newUser = NewUser(firstName, lastName, age)
+	fmt.Println(newUser)
+	year, month, day := newUser.createdDate.Date()                                                // y, m, d := myTimestamp.time.Time.Date() - can be destructured into y,m,d
+	fmt.Println(newUser.firstName, newUser.lastName, newUser.age, time.Time(newUser.createdDate)) // {Bob Bass 31 {13847557599566623880 2194786001 0x104c9e2a0}}
+	fmt.Println(month, day, year)                                                                 // June 21 2021
+
+	//? Access struct keys with dot notation
+	newUser.outputUserDetails()
+
+}
+
+//? Gets string
+func getUserData(promptText string) string {
+	fmt.Print(promptText)
+	userInput, _ := reader.ReadString('\n')
+	cleanedInput := strings.Replace(userInput, "\n", "", -1)
+	return cleanedInput
+}
+
+//? Gets int
+func getUserInt(promptText string) int {
+	fmt.Print(promptText)
+	userInput, _ := reader.ReadString('\n')
+	cleanedInput := strings.Replace(userInput, "\n", "", -1)
+	userAge, _ := strconv.Atoi(cleanedInput)
+	return userAge
+}
+
+//* Returns pointer to the value created
+func NewUser(fName string, lName string, uAge int) *User {
+	user := User{
+		firstName:   fName,
+		lastName:    lName,
+		age:         uAge,
+		createdDate: time.Now(),
+	}
+	//? returning pointer value
+	return &user
+}
+
 ```

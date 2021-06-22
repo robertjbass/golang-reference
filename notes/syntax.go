@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+)
 
 func main() {
 
@@ -119,9 +122,17 @@ func main() {
 	addResponse := add(4, 5)
 	fmt.Println("sum of 4 and 5", addResponse)
 
-	returnArray := multiple_returns()
+	returnArray := returnArray()
 	fmt.Println("[2]string{\"Hello\", \"Array\"}")
 	fmt.Println(returnArray)
+
+	//? Multiple Returns
+	num1, num2 := generateRandomNumbers()
+	fmt.Println(num1, num2)
+
+	//? Named Returns
+	sum := randomNumberSum(6, 9)
+	fmt.Println(sum)
 
 	//* Printing
 	//? fmt.Println() - creates a newline at the end
@@ -174,11 +185,48 @@ func main() {
 	// fmt.Fprint(writer, str)
 	// fmt.Fprintf(writer, format, string)
 	// fmt.Fprintln(writer, str)
+
+	//* ==================
+	//* POINTERS
+	//* ==================
+
+	//* Pointers
+	thisName := "Bob"     // computer memory: 0xc0000018050
+	thisAge := 30         // computer memory: 0xc0110020011
+	userAge := &age       // 0xc0110020011
+	userName := &thisName // 0xc0000018050
+	fmt.Println(thisName, thisAge, userAge, userName)
+
+	//* & tells go to get the memory address of age and store it in myAge
+	//? type: var myAge *int - asterisk indicates pointer
+	myAge := &age // 0x140000b2000
+
+	//? When fully written out
+	// var myAge2 *int
+	// myAge2 = &age // 0x140000b2000
+
+	fmt.Println("age memory address: ", myAge)        // 0x140000b2000
+	fmt.Println("age memory address value: ", *myAge) // 30 // this is called 'dereferencing'
+
+	//! myAge = 30 // this won't work, myAge has already been defined as a pointer
+
+	*myAge = 31
+
+	fmt.Println(*myAge) // 31
+
+	//* the original address is now modified
+	fmt.Println(age) // 31
+
+	// double() takes a reference as a value
+	doubledAge := double(&age)
+	fmt.Println("age", age)               // 31
+	fmt.Println("doubledAge", doubledAge) // 62
+
 }
 
-//* ==========
-//*	Functions
-//* ==========
+//* ====================
+//*	External Functions
+//* ====================
 
 //* Function structure
 // func name(varName varType) returnType {
@@ -190,6 +238,35 @@ func add(a int, b int) int {
 	return sum
 }
 
-func multiple_returns() [2]string {
+func returnArray() [2]string {
 	return [2]string{"Hello", "Array"}
 }
+
+func generateRandomNumbers() (int, int) {
+	fmt.Println("multiple returns")
+	randomNumber1 := rand.Intn(10)
+	randomNumber2 := rand.Intn(10)
+	return randomNumber1, randomNumber2
+}
+
+func randomNumberSum(firstNumMax int, secondNumMax int) (sum int) {
+	fmt.Println("return named value")
+	randomNumber1 := rand.Intn(firstNumMax)
+	randomNumber2 := rand.Intn(secondNumMax)
+	sum = randomNumber1 + randomNumber2
+	// return sum is implied
+	return
+}
+
+//* ==================
+//* POINTERS
+//* ==================
+
+//* Better performance
+func double(number *int) int {
+	result := *number * 2
+	*number = 100 // this will update the value of the number to 100
+	return result
+}
+
+// todo - Structs and Pointers are in external files
