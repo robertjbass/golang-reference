@@ -2,29 +2,36 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"os"
 	"strconv"
 	"strings"
 
 	"github.com/716green/academind/data-read/uuid"
+	"github.com/716green/academind/data-read/write"
 )
 
 var reader = bufio.NewReader(os.Stdin)
 
 type Data struct {
-	id          uuid.UUID
+	id          string
 	name        string
 	description string
 	price       float64
 }
 
-func generateUid() uuid.UUID {
+// func generateUid() uuid.UUID {
+func generateUid() string {
 	uid, err := uuid.NewV4()
 	if err != nil {
 		fmt.Println("Error: ", err)
 	}
-	return *uid
+
+	fmt.Println(*uid)
+	s := string(uid.String())
+
+	return s
 }
 
 func main() {
@@ -49,7 +56,18 @@ func main() {
 	Data.ReadData(newData)
 	Data.ReadData(userData)
 
-	storeData()
+	priceString := fmt.Sprintf("%f", userData.price)
+
+	stringToSave := map[string]string{
+		"id":          userData.id,
+		"name":        userData.name,
+		"description": userData.description,
+		"price":       priceString,
+	}
+
+	fmt.Println(stringToSave)
+
+	write.SaveFile(createKeyValuePairs(stringToSave))
 }
 
 func createData(name string, description string, price float64) *Data {
@@ -76,6 +94,10 @@ func getUserData(promptText string) string {
 	return cleanedInput
 }
 
-func storeData() {
-	fmt.Println("TODO - Create a function that stores the user data as a local file")
+func createKeyValuePairs(m map[string]string) string {
+	b := new(bytes.Buffer)
+	for key, value := range m {
+		fmt.Fprintf(b, "%s=\"%s\"\n", key, value)
+	}
+	return b.String()
 }
