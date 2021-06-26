@@ -1,5 +1,9 @@
 # Golang
 
+> The folders worth using for future reference would be:
+> * data-access
+> * bmi-app
+
 ## Syntax, Formats, Conventions, Standards, and Examples
 
 ### Each subfolder contains its own go.mod file and are treated as separate projects
@@ -307,6 +311,7 @@ fmt.Println("Hello Println")
 ```
 
 ## Sprint
+* Sprintf Doesn't print to the console, instead returns formatted string
 
 - Format string (default formatter or custom) and return formatted string
 - Returns the value as well
@@ -571,4 +576,21 @@ func NewUser(fName string, lName string, uAge int) *User {
 	return &user
 }
 
+```
+
+
+
+
+
+
+# Errors
+
+### Unable to find module/package path (for installed packages)
+```bash
+go mod vendor
+```
+
+https://stackoverflow.com/questions/13214029/go-build-cannot-find-package-even-though-gopath-is-set
+```md
+In the recent go versions from 1.14 onwards, we have to do `go mod vendor` before building or running, since by default go appends -mod=vendor to the go commands. So after doing `go mod vendor`, if we try to build, we won't face this issue.
 ```
