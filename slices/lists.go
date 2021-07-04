@@ -29,6 +29,13 @@ func printDivider() {
 	fmt.Println("-----------------")
 }
 
+func printSection(title string) {
+	fmt.Println("")
+	printDivider()
+	fmt.Println(title)
+	printDivider()
+}
+
 func main() {
 	myHobbies := [3]string{"Programming", "Working", "Learning"}
 	fmt.Println(myHobbies)                // [Programming Working Learning]
@@ -53,9 +60,25 @@ func main() {
 	allProducts = append(allProducts, create("Typescript Course", 12.99), create("NuxtJS", 11.99))
 	allProducts[1].log()
 	allProducts[2].log()
-	printDivider()
 
+	printSection("Assignment Result")
 	fmt.Println(allProducts)
+
+	printSection("Maps")
+	prices := []float64{9.99, 12.99}
+	fmt.Println(prices[0:1]) // 9.99
+	prices[1] = 11.99
+
+	prices = append(prices, 13.99, 14.99, 15.99, 16.99)
+	fmt.Println(prices)
+	prices = prices[1:]
+	fmt.Println(prices)
+
+	discountPrices := []float64{101.12, 201.12, 301.12}
+	// Just like JS where we may do:
+	// arr2 = [...arr1, ...arr2]
+	prices = append(prices, discountPrices...)
+	fmt.Println(prices)
 }
 
 // 1) Create a new array that contains three hobbies you have
