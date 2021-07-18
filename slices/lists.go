@@ -4,6 +4,8 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
+	//* uncomment:
+	// "github.com/google/uuid"
 )
 
 type Product struct {
